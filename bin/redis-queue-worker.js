@@ -39,10 +39,10 @@ console.log(chalk.red('Target Redis Port: ' + conf.targetRedisPort))
 checkSourceQueue()
 
 function checkSourceQueue() {
-  sourceClient.brpop(conf.sourceQueueName, 5, function(list, item) {
-    if (item) {
+  sourceClient.brpop(conf.sourceQueueName, 10, function(list, item) {
+    if (item != null) {
       console.log(chalk.yellow('--> ' + conf.sourceQueueName))
-      targetClient.rpush(conf.targetQueueName, item)
+      targetClient.rpush(conf.targetQueueName, item[1])
     }
     process.nextTick(checkSourceQueue)
   })
